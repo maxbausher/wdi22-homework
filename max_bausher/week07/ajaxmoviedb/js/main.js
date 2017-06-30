@@ -12,28 +12,29 @@ $("#search-submit").click(function () {
 //take input from user and get api info
 var doMovieSearch = function (query){
   url = "https://api.themoviedb.org/3/search/movie?api_key=24d863d54c86392e6e1df55b9a328755&query=" +  query
+  var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
-  xhr.send();
-} //take input and create a string
-var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    // unless readyState = 4, dont run (4 means finished recieving response)
-  if (xhr.readyState !== 4) {
-    return;
-  }
-  console.log('Ready!');
-    // given a specific JSON string, parse it and save it to searchResults
-  var searchResults = JSON.parse(xhr.responseText);
-    console.log(searchResults);
-    for (var i = 0; i < searchResults.results.length; i++) {
-      var result = searchResults.results[i];
-      console.log(i, result.title); //searchResults.results[i].title
-      // creating a new paragraph to appear in html
-      var $para = $('<p class="results">').html(result.title);
-      $para.attr('movie-id', result.id)
-      $('#main').append($para);
+  xhr.send(); //take input and create a string
+
+  xhr.onreadystatechange = function() {
+        // unless readyState = 4, dont run (4 means finished recieving response)
+      if (xhr.readyState !== 4) {
+        return;
+      }
+      console.log('Ready!');
+        // given a specific JSON string, parse it and save it to searchResults
+      var searchResults = JSON.parse(xhr.responseText);
+        console.log(searchResults);
+        for (var i = 0; i < searchResults.results.length; i++) {
+          var result = searchResults.results[i];
+          console.log(i, result.title); //searchResults.results[i].title
+          // creating a new paragraph to appear in html
+          var $para = $('<p class="results">').html(result.title);
+          $para.attr('movie-id', result.id)
+          $('#main').append($para);
+           };
     };
-  };
+  }
 //use ID obained above and conduct detailed search
   var doDetailSearch = function (info){
     url = "https://api.themoviedb.org/3/movie/"+ info + "?api_key=24d863d54c86392e6e1df55b9a328755"
